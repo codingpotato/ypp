@@ -3,8 +3,11 @@ cc_test(
     srcs = [
         "bit_priority_queue.cpp",
         "circ_queue.cpp",
+        "task.cpp",
     ],
-    copts = ["-Iexternal/gtest/include"],
+    copts = [
+        "-Iexternal/gtest/include",
+    ],
     deps = [
         "//kernel",
         "@gtest//:main",
