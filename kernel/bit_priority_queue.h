@@ -36,7 +36,7 @@ struct bit_priority_queue {
   }
   
 private:
-  std::uint32_t bits_;
+  std::uint32_t bits_ = 0;
 };
 
 #endif /* BIT_PRIORITY_QUEUE_H */

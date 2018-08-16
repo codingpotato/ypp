@@ -1,8 +1,12 @@
 cc_test(
-    name = "hello-test",
-    srcs = ["hello-test.cpp"],
+    name = "kernel",
+    srcs = [
+        "bit_priority_queue.cpp",
+        "circ_queue.cpp"
+    ],
     copts = ["-Iexternal/gtest/include"],
     deps = [
-        "@gtest//:main",
+        "//kernel:kernel",
+        "@gtest//:main"
     ],
 )

@@ -10,7 +10,7 @@ cc_library(
         "**/*.h"]),
     copts = [
     	  "-Iexternal/gtest/include",
-          "-Iexternal/gtest"
+        "-Iexternal/gtest"
     ],
     linkopts = ["-pthread"],
     visibility = ["//visibility:public"],
