@@ -1,7 +1,9 @@
 #ifndef CIRC_QUEUE_H
 #define CIRC_QUEUE_H
 
-template<class N>
+namespace ypp {
+
+template <class N>
 struct circ_queue {
   struct node {
     friend circ_queue;
@@ -13,7 +15,7 @@ struct circ_queue {
   inline bool empty() const {
     return tail_ == nullptr;
   }
-  
+
   inline void tail_push(N *new_node) {
     if (empty()) {
       new_node->next_ = new_node;
@@ -23,7 +25,7 @@ struct circ_queue {
     }
     tail_ = new_node;
   }
-  
+
   inline N *head_pop() {
     if (empty()) {
       return nullptr;
@@ -37,9 +39,11 @@ struct circ_queue {
       return first;
     }
   }
-  
+
 private:
   N *tail_ = nullptr;
 };
+
+} // namespace ypp
 
 #endif /* CIRC_QUEUE_H */
