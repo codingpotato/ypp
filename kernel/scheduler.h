@@ -36,9 +36,10 @@ struct scheduler {
     /* TODO */
   }
 
+private:
+  inline scheduler() {}
   void schedule_task(basic_task &tsk);
 
-private:
   static scheduler global_scheduler_;
 
   bit_priority_queue priority_pqueue_;

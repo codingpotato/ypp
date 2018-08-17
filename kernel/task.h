@@ -25,8 +25,8 @@ struct basic_task : circ_queue<basic_task>::node {
            static_cast<char>(task_status::running);
   }
 
-  inline void schedule(scheduler &sched = scheduler::global_scheduler()) {
-    sched.schedule_task(*this);
+  inline void schedule() {
+    scheduler::global_scheduler().schedule_task(*this);
   }
 
   virtual void run() = 0;
