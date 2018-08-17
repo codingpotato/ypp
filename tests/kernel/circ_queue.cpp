@@ -4,8 +4,7 @@
 using namespace ypp;
 
 struct object : circ_queue<object>::node {
-  object(int i) : i_{i} {
-  }
+  object(int i) : i_{i} {}
 
   int val() {
     return i_;

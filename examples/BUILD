@@ -1,4 +1,5 @@
 cc_binary(
-    name = "hello-world",
-    srcs = ["hello-world.cc"],
+    name = "hello_world",
+    srcs = ["hello_world.cpp"],
+    deps = ["//kernel"],
 )
