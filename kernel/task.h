@@ -34,13 +34,16 @@ struct basic_task : circ_queue<basic_task>::node {
 private:
   int priority_;
   task_status status_ = task_status::stopped;
+
   char *stack_ = nullptr;
+  size_t stack_size_;
 };
 
 template <std::size_t stack_size>
 struct task : public basic_task {
   inline task(int priority = 1) : basic_task{priority} {
     stack_ = stack_allocation_;
+    stack_size_ = stack_size;
   }
 
 private:
