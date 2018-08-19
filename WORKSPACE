@@ -1,8 +1,9 @@
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
-http_archive(
+# Google Test 1.9.0 is not yet out, while 1.8.0 did not have support for Bazel
+# Will prefer to use stable build 1.9.0 when it's out
+git_repository(
     name = "gtest",
-    build_file = "//tests:gtest.BUILD",
-    strip_prefix = "googletest-release-1.8.0/googletest",
-    url = "https://github.com/google/googletest/archive/release-1.8.0.zip",
+    commit = "d1c1aac78160ae31353d9fe1bb1171353986a4f1",  # using nightly build on Aug 19, 2018
+    remote = "https://github.com/google/googletest.git",
 )

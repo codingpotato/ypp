@@ -10,6 +10,6 @@ cc_test(
     ],
     deps = [
         "//kernel",
-        "@gtest//:main",
+        "@gtest//:gtest_main",
     ],
 )
