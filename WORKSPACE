@@ -1,5 +1,12 @@
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
+# bazel query fails for gtest without this dependency
+git_repository(
+    name = "com_google_absl",
+    remote = "https://github.com/abseil/abseil-cpp.git",
+    tag = "20180600",
+)
+
 # Google Test 1.9.0 is not yet out, while 1.8.0 did not have support for Bazel
 # Will prefer to use stable build 1.9.0 when it's out
 git_repository(

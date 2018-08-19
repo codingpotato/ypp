@@ -1,3 +1,8 @@
+#if defined(__APPLE__) && defined(__MACH__)
+#define _XOPEN_SOURCE
+#define _DARWIN_C_SOURCE
+#endif
+
 #include <iostream>
 #include <ucontext.h>
 
