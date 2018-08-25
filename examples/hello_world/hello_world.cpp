@@ -1,6 +1,6 @@
 #include <iostream>
-#include "kernel/scheduler.h"
-#include "kernel/task.h"
+#include <ypp/kernel/scheduler.h>
+#include <ypp/kernel/task.h>
 
 using namespace std;
 using namespace ypp;

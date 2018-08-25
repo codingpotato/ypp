@@ -34,5 +34,6 @@
 # VSCode
 .vscode
 
-# Bazel build
-bazel*
+# SCons build
+.sconsign.dblite
+scons_build

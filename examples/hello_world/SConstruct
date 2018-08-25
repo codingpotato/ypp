@@ -1,0 +1,7 @@
+import scpm
+
+env = Environment(tools=[scpm.setup], CPPFLAGS="-std=c++17")
+
+ypp = env.Load("ypp", "../..")
+
+env.Program("$BUILDROOT/hello_world", ["$BUILDROOT/hello_world.cpp", ypp])

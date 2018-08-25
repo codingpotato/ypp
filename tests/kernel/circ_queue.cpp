@@ -1,5 +1,5 @@
-#include "kernel/circ_queue.h"
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
+#include <ypp/kernel/circ_queue.h>
 
 using namespace ypp;
 

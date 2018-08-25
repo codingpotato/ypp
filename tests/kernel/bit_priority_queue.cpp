@@ -1,5 +1,5 @@
-#include "kernel/bit_priority_queue.h"
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
+#include <ypp/kernel/bit_priority_queue.h>
 
 using namespace ypp;
 

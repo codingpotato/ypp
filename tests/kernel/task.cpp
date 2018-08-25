@@ -1,5 +1,5 @@
-#include "kernel/task.h"
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
+#include <ypp/kernel/task.h>
 
 using namespace ypp;
 
