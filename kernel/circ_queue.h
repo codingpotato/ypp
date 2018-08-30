@@ -1,16 +1,31 @@
-#ifndef CIRC_QUEUE_H
-#define CIRC_QUEUE_H
+#ifndef YPP_KERNEL_CIRC_QUEUE_H
+#define YPP_KERNEL_CIRC_QUEUE_H
 
 namespace ypp {
+namespace kernel_impl {
 
 template <class N>
 struct circ_queue {
   struct node {
     friend circ_queue;
 
+    inline node() {}
+
+    node(const node &) = delete;
+    node &operator=(const node &) = delete;
+    node(node &&) = delete;
+    node &operator=(node &&) = delete;
+
   private:
     N *next_ = nullptr;
   };
+
+  inline circ_queue() {}
+
+  circ_queue(const circ_queue &) = delete;
+  circ_queue &operator=(const circ_queue &) = delete;
+  circ_queue(circ_queue &&) = default;
+  circ_queue &operator=(circ_queue &&) = default;
 
   inline bool empty() const {
     return tail_ == nullptr;
@@ -44,6 +59,7 @@ private:
   N *tail_ = nullptr;
 };
 
+} // namespace kernel_impl
 } // namespace ypp
 
-#endif /* CIRC_QUEUE_H */
+#endif /* YPP_KERNEL_CIRC_QUEUE_H */

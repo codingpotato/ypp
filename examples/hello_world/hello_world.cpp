@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ypp/kernel/application.h>
 #include <ypp/kernel/scheduler.h>
 #include <ypp/kernel/task.h>
 
@@ -11,14 +12,14 @@ struct hello_world_task : task<255> {
   }
 };
 
+static auto sched = make_scheduler_with_priorities<32>();
 int main() {
-  scheduler::run_queue<32> queue;
-  scheduler::global_scheduler().initialize(queue);
+  application::instance.register_scheduler(sched);
 
   hello_world_task tsk;
   tsk.schedule();
 
-  scheduler::global_scheduler().start();
+  application::instance.start();
 
   return 0;
 }
