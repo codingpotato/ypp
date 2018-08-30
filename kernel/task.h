@@ -1,15 +1,23 @@
-#ifndef TASK_H
-#define TASK_H
+#ifndef YPP_KERNEL_TASK_H
+#define YPP_KERNEL_TASK_H
 
-#include <cstddef>
+#include "application.h"
 #include "circ_queue.h"
 #include "scheduler.h"
 
 namespace ypp {
 
 enum class task_status : char { stopped = 0, blocked, running, pending };
+static_assert(static_cast<char>(task_status::stopped) <
+              static_cast<char>(task_status::running));
+static_assert(static_cast<char>(task_status::blocked) <
+              static_cast<char>(task_status::running));
+static_assert(static_cast<char>(task_status::running) >=
+              static_cast<char>(task_status::running));
+static_assert(static_cast<char>(task_status::pending) >=
+              static_cast<char>(task_status::running));
 
-struct basic_task : circ_queue<basic_task>::node {
+struct basic_task : kernel_impl::circ_queue<basic_task>::node {
   friend scheduler;
   template <std::size_t stack_size>
   friend struct task;
@@ -26,7 +34,7 @@ struct basic_task : circ_queue<basic_task>::node {
   }
 
   inline void schedule() {
-    scheduler::global_scheduler().schedule_task(*this);
+    application::instance.scheduler().schedule_task(*this);
   }
 
   virtual void run() = 0;
@@ -52,4 +60,4 @@ private:
 
 } // namespace ypp
 
-#endif /* TASK_H */
+#endif /* YPP_KERNEL_TASK_H */

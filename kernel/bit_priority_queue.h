@@ -1,9 +1,10 @@
-#ifndef BIT_PRIORITY_QUEUE_H
-#define BIT_PRIORITY_QUEUE_H
+#ifndef YPP_KERNEL_BIT_PRIORITY_QUEUE_H
+#define YPP_KERNEL_BIT_PRIORITY_QUEUE_H
 
 #include <cstdint>
 
 namespace ypp {
+namespace kernel_impl {
 
 struct bit_priority_queue {
   inline bool empty() const {
@@ -42,6 +43,7 @@ private:
   std::uint32_t bits_ = 0;
 };
 
+} // namespace kernel_impl
 } // namespace ypp
 
-#endif /* BIT_PRIORITY_QUEUE_H */
+#endif /* YPP_KERNEL_BIT_PRIORITY_QUEUE_H */

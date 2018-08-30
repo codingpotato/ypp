@@ -1,5 +1,0 @@
-import scpm
-
-env = Environment(tools=[scpm.setup])
-
-env.Program("$BUILDROOT/raw", "$BUILDROOT/main.cpp")
