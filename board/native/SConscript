@@ -1,0 +1,6 @@
+Import("env")
+
+env.ExportFiles(env.Glob("*.h"), "..")
+
+objs = env.Objects(env.Glob("*.cpp"))
+Return("objs")

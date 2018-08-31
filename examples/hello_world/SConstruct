@@ -1,8 +1,10 @@
 import scpm
 
-env = Environment(tools=[scpm.setup], CPPFLAGS="-std=c++17")
+env = Environment(tools=[scpm.setup], BUILDROOT="#scons_build/$BOARD",
+                  BOARD=ARGUMENTS.get("board", "native"))
 
 ypp = env.Load("ypp", "../..")
+ypp_board_stm32 = env.Load("ypp_board_stm32", "../../../ypp_board_stm32")
 
-program = env.MainProgram("$BUILDROOT/hello_world",
-                          ["$BUILDROOT/hello_world.cpp", ypp])
+program = env.YPPMainProgram(
+    "$BUILDROOT/hello_world", ["$BUILDROOT/hello_world.cpp", ypp_board_stm32, ypp])

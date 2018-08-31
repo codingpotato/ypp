@@ -3,6 +3,9 @@
 #include <ypp/kernel/scheduler.h>
 #include <ypp/kernel/thread.h>
 
+// Testing
+#include <ypp/kernel/exec_manager.h>
+
 using namespace std;
 using namespace ypp;
 

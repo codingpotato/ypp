@@ -1,6 +1,19 @@
+import os
+
 Import("env")
 
-env.ExportFiles(env.Glob("*.h"))
 
-objs = env.Objects(env.Glob("*.cpp"))
-Return("objs")
+def _select_board_impl(env, label=""):
+    board_name = env.get("BOARD")
+    if board_name and os.path.exists(env.Dir(board_name).srcnode().path):
+        print("Board \"{}\" found in {}!".format(board_name, label))
+        return env.Flatten(env.SConscript(dirs=board_name))
+    else:
+        print("Board \"{}\" not found in {}...".format(board_name, label))
+        return []
+
+
+env.AddMethod(_select_board_impl, "SelectBoard")
+
+board = env.SelectBoard("ypp core boards")
+Return("board")
