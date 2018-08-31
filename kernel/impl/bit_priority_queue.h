@@ -3,8 +3,7 @@
 
 #include <cstdint>
 
-namespace ypp {
-namespace kernel_impl {
+namespace ypp::kernel_impl {
 
 struct bit_priority_queue {
   inline bool empty() const {
@@ -43,7 +42,6 @@ private:
   std::uint32_t bits_ = 0;
 };
 
-} // namespace kernel_impl
-} // namespace ypp
+} // namespace ypp::kernel_impl
 
 #endif /* YPP_KERNEL_BIT_PRIORITY_QUEUE_H */

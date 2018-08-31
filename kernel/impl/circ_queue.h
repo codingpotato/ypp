@@ -1,8 +1,7 @@
 #ifndef YPP_KERNEL_CIRC_QUEUE_H
 #define YPP_KERNEL_CIRC_QUEUE_H
 
-namespace ypp {
-namespace kernel_impl {
+namespace ypp::kernel_impl {
 
 template <class N>
 struct circ_queue {
@@ -59,7 +58,6 @@ private:
   N *tail_ = nullptr;
 };
 
-} // namespace kernel_impl
-} // namespace ypp
+} // namespace ypp::kernel_impl
 
 #endif /* YPP_KERNEL_CIRC_QUEUE_H */
