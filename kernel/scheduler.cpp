@@ -1,9 +1,9 @@
 #include "scheduler.h"
-#include "task.h"
+#include "thread.h"
 
 namespace ypp {
 
-void scheduler::schedule_task(basic_task &tsk) {
+void scheduler::schedule_thread(basic_thread &th) {
   /* TODO */
 }
 

@@ -13,10 +13,8 @@ struct application {
   application(application &&) = delete;
   application &operator=(application &&) = delete;
 
-  template <std::size_t priority_count>
-  inline void
-  register_scheduler(scheduler_allocation<priority_count> &scheduler) {
-    scheduler_ = &scheduler.scheduler_;
+  inline void register_scheduler(scheduler &scheduler) {
+    scheduler_ = &scheduler;
   }
 
   inline ypp::scheduler &scheduler() {

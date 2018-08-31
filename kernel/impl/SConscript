@@ -1,9 +1,6 @@
 Import("env")
 
-impl = env.SConscript(dirs="impl")
-
 env.ExportFiles(env.Glob("*.h"))
 
 objs = env.Objects(env.Glob("*.cpp"))
-lib = objs + impl
-Return("lib")
+Return("objs")

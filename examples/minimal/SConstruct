@@ -19,5 +19,5 @@ env.Replace(LINKFLAGS=["-mcpu=cortex-m7", "-mthumb", "-mfpu=fpv5-d16", "-mfloat-
 
 board = env.Load("ypp_board_stm32", "../../../ypp_board_stm32")
 
-program = env.Program("$BUILDROOT/main", ["$BUILDROOT/main.cpp", board])
+program = env.MainProgram("$BUILDROOT/main", ["$BUILDROOT/main.cpp", board])
 env.Depends(program, ldscript)
