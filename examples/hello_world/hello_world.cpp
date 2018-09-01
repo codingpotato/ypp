@@ -1,4 +1,4 @@
-#include <iostream>
+#include <cstdio>
 #include <ypp/kernel/application.h>
 #include <ypp/kernel/scheduler.h>
 #include <ypp/kernel/thread.h>
@@ -6,20 +6,19 @@
 // Testing
 #include <ypp/kernel/exec_manager.h>
 
-using namespace std;
 using namespace ypp;
 
 struct hello_world_thread : thread<255> {
   void run() override {
-    cout << "Hello world!" << endl;
+    printf("Hello world!\n");
   }
 };
 
-static auto sched = make_scheduler_with_priorities<32>();
+auto sched = make_scheduler_with_priorities<32>();
+hello_world_thread th;
+
 int main() {
   application::instance.register_scheduler(sched);
-
-  hello_world_thread th;
   th.schedule();
 
   application::instance.start();
