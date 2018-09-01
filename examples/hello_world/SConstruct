@@ -7,4 +7,4 @@ ypp = env.Load("ypp", "../..")
 ypp_board_stm32 = env.Load("ypp_board_stm32", "../../../ypp_board_stm32")
 
 program = env.YPPMainProgram(
-    "$BUILDROOT/hello_world", ["$BUILDROOT/hello_world.cpp", ypp_board_stm32, ypp])
+    "$BUILDROOT/hello_world", ["$BUILDROOT/hello_world.cpp"] + env.UniqueFlatten(ypp_board_stm32 + ypp))
