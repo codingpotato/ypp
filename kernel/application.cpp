@@ -8,4 +8,4 @@ application::application() {
   /* TODO */
 }
 
-}
+} // namespace ypp

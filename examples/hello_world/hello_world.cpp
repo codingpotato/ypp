@@ -3,9 +3,6 @@
 #include <ypp/kernel/scheduler.h>
 #include <ypp/kernel/thread.h>
 
-// Testing
-#include <ypp/kernel/exec_manager.h>
-
 using namespace ypp;
 
 struct hello_world_thread : thread<255> {

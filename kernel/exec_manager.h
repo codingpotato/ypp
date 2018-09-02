@@ -1,7 +1,7 @@
-#ifndef YPP_EXEC_MANAGER_H
-#define YPP_EXEC_MANAGER_H
+#ifndef YPP_KERNEL_EXEC_MANAGER_H
+#define YPP_KERNEL_EXEC_MANAGER_H
 
-#include <ypp/board/exec_context.h>
+#include "exec_context.h"
 
 namespace ypp {
 
@@ -13,11 +13,11 @@ struct exec_manager {
   exec_manager(exec_manager &&) = delete;
   exec_manager &operator=(exec_manager &&) = delete;
 
-  inline void switch_to(exec_context &ctx) {
+  inline void switch_to(exec_context &ctx, void *target = nullptr) {
     if (&ctx != current_) {
       exec_context *origin = current_;
       current_ = &ctx;
-      ctx.switch_from(origin);
+      ctx.switch_from(origin, target);
     }
   }
 
@@ -32,4 +32,4 @@ private:
 
 } // namespace ypp
 
-#endif /* YPP_EXEC_MANAGER_H */
+#endif /* YPP_KERNEL_EXEC_MANAGER_H */
