@@ -31,9 +31,6 @@
 *.out
 *.app
 
-# VSCode
-.vscode
-
 # SCons build
 .sconsign.dblite
 scons_build
