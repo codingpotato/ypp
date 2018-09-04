@@ -13,11 +13,11 @@ struct exec_manager {
   exec_manager(exec_manager &&) = delete;
   exec_manager &operator=(exec_manager &&) = delete;
 
-  inline void switch_to(exec_context &ctx, void *target = nullptr) {
+  inline void switch_to(exec_context &ctx) {
     if (&ctx != current_) {
       exec_context *origin = current_;
       current_ = &ctx;
-      ctx.switch_from(origin, target);
+      ctx.switch_from(origin);
     }
   }
 

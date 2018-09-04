@@ -2,6 +2,7 @@
 #define YPP_KERNEL_SCHEDULER_H
 
 #include <cstddef>
+#include "exec_manager.h"
 #include "impl/bit_priority_queue.h"
 #include "impl/circ_queue.h"
 
@@ -25,13 +26,19 @@ private:
       : priority_queues_{priority_queues} {}
 
   void schedule_thread(basic_thread &th);
+  void finish_thread(basic_thread const &th);
+  void switch_thread();
 
   inline void start() {
-    /* TODO */
+    switch_thread();
+    while (true) {
+    }
   }
 
   kernel_impl::bit_priority_queue priority_pqueue_;
   kernel_impl::circ_queue<basic_thread> *priority_queues_;
+
+  exec_manager exec_manager_;
 };
 
 template <std::size_t priority_count>

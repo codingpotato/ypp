@@ -5,13 +5,13 @@
 
 using namespace ypp;
 
-struct hello_world_thread : thread<255> {
+struct hello_world_thread : thread<> {
   void run() override {
     printf("Hello world!\n");
   }
 };
 
-auto sched = make_scheduler_with_priorities<32>();
+auto sched = make_scheduler_with_priorities<8>();
 hello_world_thread th;
 
 int main() {

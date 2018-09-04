@@ -1,7 +1,9 @@
 #ifndef YPP_KERNEL_THREAD_H
 #define YPP_KERNEL_THREAD_H
 
+#include <ypp/board/config.h>
 #include "application.h"
+#include "exec_context.h"
 #include "impl/circ_queue.h"
 #include "scheduler.h"
 
@@ -19,6 +21,7 @@ static_assert(static_cast<char>(thread_status::pending) >=
 
 struct basic_thread : private kernel_impl::circ_queue<basic_thread>::node {
   friend scheduler;
+  friend kernel_impl::circ_queue<basic_thread>;
   template <std::size_t stack_size>
   friend struct thread;
 
@@ -34,20 +37,36 @@ struct basic_thread : private kernel_impl::circ_queue<basic_thread>::node {
   }
 
   inline void schedule() {
+    if (status_ == thread_status::stopped) {
+      ctx_.init(stack_, stack_size_, &run_thread, this);
+    }
+    status_ = thread_status::pending;
     application::instance.scheduler().schedule_thread(*this);
   }
 
   virtual void run() = 0;
 
 private:
+  static void run_thread(void *th) {
+    static_cast<basic_thread *>(th)->start();
+  }
+
+  inline void start() {
+    run();
+    status_ = thread_status::stopped;
+    application::instance.scheduler().finish_thread(*this);
+  }
+
   int priority_;
   thread_status status_ = thread_status::stopped;
 
   char *stack_ = nullptr;
   size_t stack_size_;
+
+  exec_context ctx_;
 };
 
-template <std::size_t stack_size>
+template <std::size_t stack_size = DEFAULT_STACK_SIZE>
 struct thread : public basic_thread {
   inline thread(int priority = 0) : basic_thread{priority} {
     stack_ = stack_allocation_;

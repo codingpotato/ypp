@@ -31,7 +31,7 @@ struct F2 {
 
   void run() {
     cout << name << endl;
-    manager.switch_to_base();
+    manager.switch_to(f1_ctx);
     cout << name << endl;
     manager.switch_to_base();
   }
@@ -49,15 +49,13 @@ int main() {
   F1 f1{"f1"};
   F2 f2{"f2"};
 
-  f1_ctx.init(stack1, 32768, &do_run<F1>);
-  f2_ctx.init(stack2, 32768, &do_run<F2>);
+  f1_ctx.init(stack1, 32768, &do_run<F1>, &f1);
+  f2_ctx.init(stack2, 32768, &do_run<F2>, &f2);
 
   cout << "start!" << endl;
-  manager.switch_to(f1_ctx, &f1);
-  cout << "main1!" << endl;
-  manager.switch_to(f2_ctx, &f2);
-  cout << "main2!" << endl;
-  manager.switch_to(f1_ctx, &f1);
+  manager.switch_to(f2_ctx);
+  cout << "main!" << endl;
+  manager.switch_to(f1_ctx);
   cout << "end!" << endl;
   return 0;
 }
