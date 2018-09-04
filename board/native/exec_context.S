@@ -57,36 +57,41 @@ _make_ctx:
 .align 8
 _jump_ctx:
   /* save MMX control- and status-word */
-  stmxcsr (%rdi)
+  stmxcsr (%rsi)
   /* save x87 control-word */ 
-  fnstcw 0x4(%rdi)
+  fnstcw 0x4(%rsi)
 
-  movq %r12, 0x8(%rdi)  /* save R12 */
-  movq %r13, 0x10(%rdi)  /* save R13 */
-  movq %r14, 0x18(%rdi)  /* save R14 */
-  movq %r15, 0x20(%rdi)  /* save R15 */
-  movq %rbx, 0x28(%rdi)  /* save RBX */
-  movq %rbp, 0x30(%rdi)  /* save RBP */
+  movq %r12, 0x8(%rsi)  /* save R12 */
+  movq %r13, 0x10(%rsi)  /* save R13 */
+  movq %r14, 0x18(%rsi)  /* save R14 */
+  movq %r15, 0x20(%rsi)  /* save R15 */
+  movq %rbx, 0x28(%rsi)  /* save RBX */
+  movq %rbp, 0x30(%rsi)  /* save RBP */
 
-  pop 0x40(%rdi) /* save RIP */
-  movq %rsp, 0x38(%rdi)  /* save RSP */
+  pop 0x40(%rsi) /* save RIP */
+  movq %rsp, 0x38(%rsi)  /* save RSP */
 
+.globl _set_ctx
+.align 8
+_set_ctx:
   /* restore MMX control- and status-word */
-  ldmxcsr (%rsi)
+  ldmxcsr (%rdi)
   /* restore x87 control-word */ 
-  fldcw 0x4(%rsi)
+  fldcw 0x4(%rdi)
 
-  movq 0x8(%rsi), %r12  /* restore R12 */
-  movq 0x10(%rsi), %r13  /* restore R13 */
-  movq 0x18(%rsi), %r14  /* restore R14 */
-  movq 0x20(%rsi), %r15  /* restore R15 */
-  movq 0x28(%rsi), %rbx  /* restore RBX */
-  movq 0x30(%rsi), %rbp  /* restore RBP */
-  movq 0x38(%rsi), %rsp /* restore RSP */
+  movq 0x8(%rdi), %r12  /* restore R12 */
+  movq 0x10(%rdi), %r13  /* restore R13 */
+  movq 0x18(%rdi), %r14  /* restore R14 */
+  movq 0x20(%rdi), %r15  /* restore R15 */
+  movq 0x28(%rdi), %rbx  /* restore RBX */
+  movq 0x30(%rdi), %rbp  /* restore RBP */
+  movq 0x38(%rdi), %rsp /* restore RSP */
+
+  movq 0x40(%rdi), %rax
 
   movq %rbx, %rdi
 
-  jmp *0x40(%rsi)
+  jmp *%rax
 
 finish:
   xorq %rdi, %rdi

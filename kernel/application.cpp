@@ -4,8 +4,4 @@ namespace ypp {
 
 application application::instance;
 
-application::application() {
-  /* TODO */
-}
-
 } // namespace ypp

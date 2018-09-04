@@ -21,14 +21,17 @@ struct application {
     return *scheduler_;
   }
 
-  inline void start() {
+  [[noreturn]] inline void start() {
     if (scheduler_ != nullptr) {
       scheduler_->start();
+    } else {
+      while (true) {
+      }
     }
   }
 
 private:
-  application();
+  inline application() {}
 
   ypp::scheduler *scheduler_ = nullptr;
 };

@@ -1,10 +1,8 @@
 #include <iostream>
 
-#include <ypp/kernel/exec_manager.h>
+#include <ypp/kernel/exec_context.h>
 
 using namespace std;
-
-ypp::exec_manager manager;
 
 char stack1[32768];
 ypp::exec_context f1_ctx;
@@ -12,14 +10,16 @@ ypp::exec_context f1_ctx;
 char stack2[32768];
 ypp::exec_context f2_ctx;
 
+ypp::exec_context base_ctx;
+
 struct F1 {
   F1(string const &n) : name{n} {}
 
   void run() {
     cout << name << endl;
-    manager.switch_to_base();
+    base_ctx.switch_from(f1_ctx);
     cout << name << endl;
-    manager.switch_to(f2_ctx);
+    f2_ctx.switch_from(f1_ctx);
   }
 
 private:
@@ -31,9 +31,9 @@ struct F2 {
 
   void run() {
     cout << name << endl;
-    manager.switch_to(f1_ctx);
+    f1_ctx.switch_from(f2_ctx);
     cout << name << endl;
-    manager.switch_to_base();
+    base_ctx.switch_from(f2_ctx);
   }
 
 private:
@@ -53,9 +53,9 @@ int main() {
   f2_ctx.init(stack2, 32768, &do_run<F2>, &f2);
 
   cout << "start!" << endl;
-  manager.switch_to(f2_ctx);
+  f2_ctx.switch_from(base_ctx);
   cout << "main!" << endl;
-  manager.switch_to(f1_ctx);
+  f1_ctx.switch_from(base_ctx);
   cout << "end!" << endl;
   return 0;
 }

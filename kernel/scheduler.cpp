@@ -3,33 +3,68 @@
 
 namespace ypp {
 
+inline void scheduler::switch_to(basic_thread &th, exec_context &from_ctx) {
+  th.status_ = thread_status::running;
+  current_thread_ = &th;
+  th.ctx_.switch_from(from_ctx);
+}
+
+inline void scheduler::switch_no_return_to(basic_thread &th) {
+  th.status_ = thread_status::running;
+  current_thread_ = &th;
+  th.ctx_.switch_no_return();
+}
+
+inline void scheduler::auto_switch_no_return() {
+  if (priority_pqueue_.empty()) {
+    current_thread_ = nullptr;
+    base_context_.switch_no_return();
+  } else {
+    auto *thread = priority_queues_[priority_pqueue_.first()].head_peek();
+    switch_no_return_to(*thread);
+  }
+}
+
+[[noreturn]] void scheduler::start() {
+  started_ = true;
+  if (!priority_pqueue_.empty()) {
+    auto *thread = priority_queues_[priority_pqueue_.first()].head_peek();
+    switch_to(*thread, base_context_);
+  }
+  while (true) {
+  }
+}
+
 void scheduler::schedule_thread(basic_thread &th) {
   auto &priority_queue = priority_queues_[th.priority_];
   if (priority_queue.empty()) {
     priority_pqueue_.set(th.priority_);
   }
   priority_queue.tail_push(&th);
-  switch_thread();
+  if (started_) {
+    if (current_thread_ == nullptr) {
+      switch_to(th, base_context_);
+    } else if (current_thread_->priority_ > th.priority_) {
+      current_thread_->status_ = thread_status::pending;
+      switch_to(th, current_thread_->ctx_);
+    }
+  }
 }
 
-void scheduler::finish_thread(basic_thread const &th) {
+void scheduler::finish_thread(basic_thread &th) {
   auto &priority_queue = priority_queues_[th.priority_];
   if (priority_queue.head_peek() == &th) {
     priority_queue.head_pop();
     if (priority_queue.empty()) {
       priority_pqueue_.unset(th.priority_);
+      auto_switch_no_return();
+    } else {
+      auto *thread = priority_queue.head_peek();
+      switch_no_return_to(*thread);
     }
-  }
-  switch_thread();
-}
-
-void scheduler::switch_thread() {
-  if (priority_pqueue_.empty()) {
-    exec_manager_.switch_to_base();
   } else {
-    auto *thread = priority_queues_[priority_pqueue_.first()].head_peek();
-    thread->status_ = thread_status::running;
-    exec_manager_.switch_to(thread->ctx_);
+    /* thread queue status is incorrect, attempt to recover */
+    auto_switch_no_return();
   }
 }
 

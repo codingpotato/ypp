@@ -2,7 +2,7 @@
 #define YPP_KERNEL_SCHEDULER_H
 
 #include <cstddef>
-#include "exec_manager.h"
+#include "exec_context.h"
 #include "impl/bit_priority_queue.h"
 #include "impl/circ_queue.h"
 
@@ -25,20 +25,22 @@ private:
   inline scheduler(kernel_impl::circ_queue<basic_thread> *priority_queues)
       : priority_queues_{priority_queues} {}
 
-  void schedule_thread(basic_thread &th);
-  void finish_thread(basic_thread const &th);
-  void switch_thread();
+  inline void switch_to(basic_thread &th, exec_context &from_ctx);
+  inline void switch_no_return_to(basic_thread &th);
+  inline void auto_switch_no_return();
 
-  inline void start() {
-    switch_thread();
-    while (true) {
-    }
-  }
+  [[noreturn]] void start();
+
+  void schedule_thread(basic_thread &th);
+  void finish_thread(basic_thread &th);
 
   kernel_impl::bit_priority_queue priority_pqueue_;
   kernel_impl::circ_queue<basic_thread> *priority_queues_;
 
-  exec_manager exec_manager_;
+  bool started_ = false;
+
+  basic_thread *current_thread_ = nullptr;
+  exec_context base_context_;
 };
 
 template <std::size_t priority_count>
