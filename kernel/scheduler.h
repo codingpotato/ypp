@@ -26,12 +26,14 @@ private:
       : priority_queues_{priority_queues} {}
 
   inline void switch_to(basic_thread &th, exec_context &from_ctx);
+  inline void auto_switch(exec_context &from_ctx);
   inline void switch_no_return_to(basic_thread &th);
   inline void auto_switch_no_return();
 
   [[noreturn]] void start();
 
   void schedule_thread(basic_thread &th);
+  void yield_thread(basic_thread &th);
   void finish_thread(basic_thread &th);
 
   kernel_impl::bit_priority_queue priority_pqueue_;

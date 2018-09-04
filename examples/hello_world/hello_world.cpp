@@ -35,17 +35,28 @@ struct hello_world_thread : thread<> {
     unimp.schedule();
     imp.schedule();
     printf("Hello world again!\n");
+    yield();
+    printf("Hello world third time!\n");
   }
 };
 
-hello_world_thread main_th;
+struct main_thread : thread<> {
+  main_thread() : thread{static_cast<int>(thread_priority::main)} {}
+
+  void run() override {
+    printf("Main here!\n");
+  }
+};
+
+hello_world_thread hello_world_th;
+main_thread main_th;
 
 auto sched = make_scheduler_with_priorities<8>();
 int main() {
   application::instance.register_scheduler(sched);
+  hello_world_th.schedule();
   main_th.schedule();
 
+  printf("Ready to start!\n");
   application::instance.start();
-
-  return 0;
 }

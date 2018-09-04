@@ -54,12 +54,22 @@ struct circ_queue {
     }
   }
 
+  inline void head_pop_tail_push() {
+    if (!empty()) {
+      tail_ = tail_->next_;
+    }
+  }
+
   inline N *head_peek() {
     if (empty()) {
       return nullptr;
     } else {
       return tail_->next_;
     }
+  }
+
+  inline N *tail_peek() {
+    return tail_;
   }
 
 private:

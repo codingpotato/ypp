@@ -7,10 +7,12 @@
 namespace ypp {
 
 namespace {
-extern "C" void make_ctx(void *ctx, void *stack_ptr, void (*func)(void *),
-                         void const *target);
-extern "C" void jump_ctx(void *to, void *from);
-extern "C" void set_ctx(void *to);
+extern "C" {
+void make_ctx(void *ctx, void *stack_ptr, void (*func)(void *),
+              void const *target);
+void jump_ctx(void *to, void *from);
+[[noreturn]] void set_ctx(void *to);
+}
 } // namespace
 
 struct exec_context {
@@ -28,7 +30,7 @@ struct exec_context {
   inline void switch_from(exec_context &current) {
     jump_ctx(data_, &current);
   }
-  inline void switch_no_return() {
+  [[noreturn]] inline void switch_no_return() {
     set_ctx(data_);
   }
 

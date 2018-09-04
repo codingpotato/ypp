@@ -9,6 +9,16 @@ inline void scheduler::switch_to(basic_thread &th, exec_context &from_ctx) {
   th.ctx_.switch_from(from_ctx);
 }
 
+inline void scheduler::auto_switch(exec_context &from_ctx) {
+  if (priority_pqueue_.empty()) {
+    current_thread_ = nullptr;
+    base_context_.switch_from(from_ctx);
+  } else {
+    auto *thread = priority_queues_[priority_pqueue_.first()].head_peek();
+    switch_to(*thread, from_ctx);
+  }
+}
+
 inline void scheduler::switch_no_return_to(basic_thread &th) {
   th.status_ = thread_status::running;
   current_thread_ = &th;
@@ -48,6 +58,21 @@ void scheduler::schedule_thread(basic_thread &th) {
       current_thread_->status_ = thread_status::pending;
       switch_to(th, current_thread_->ctx_);
     }
+  }
+}
+
+void scheduler::yield_thread(basic_thread &th) {
+  auto &priority_queue = priority_queues_[th.priority_];
+  if (priority_queue.head_peek() == &th) {
+    if (priority_queue.tail_peek() != &th) {
+      th.status_ = thread_status::pending;
+      priority_queue.head_pop_tail_push();
+      auto *next = priority_queue.head_peek();
+      switch_to(*next, th.ctx_);
+    }
+  } else {
+    /* thread queue status is incorrect, attempt to recover */
+    auto_switch(th.ctx_);
   }
 }
 

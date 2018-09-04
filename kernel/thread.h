@@ -44,6 +44,10 @@ struct basic_thread : private kernel_impl::circ_queue<basic_thread>::node {
     application::instance.scheduler().schedule_thread(*this);
   }
 
+  inline void yield() {
+    application::instance.scheduler().yield_thread(*this);
+  }
+
   virtual void run() = 0;
 
 private:
