@@ -2,7 +2,7 @@ import scpm
 import os
 
 env = Environment(tools=[scpm.setup], BUILDROOT="#scons_build/$BOARD", BOARD=os.environ.get("BOARD", "native"),
-                  CCFLAGS=["-fno-exceptions", "-O3", "-flto"], CXXFLAGS=["-fno-rtti"])
+                  CCFLAGS=["-fno-exceptions", "-O3", "-flto", "-g"])
 
 ypp = env.Load("ypp", "../..")
 ypp_board_stm32 = env.Load("ypp_board_stm32", "../../../ypp_board_stm32")

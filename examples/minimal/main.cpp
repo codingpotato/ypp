@@ -19,6 +19,8 @@ int main(void) {
     gpio_toggle_led(2);
   }
 
+  print_LR();
+
   while (1) {
     printf("toggle led\r\n");
     gpio_toggle_led(1);
