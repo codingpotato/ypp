@@ -8,11 +8,11 @@ inline bool on_psp() {
   return __get_CONTROL() & 2;
 }
 
-inline void print_LR() {
-  uint32_t result;
-
-  asm volatile("mov %0, lr" : "=r"(result));
-  printf("%#010lx\r\n", result);
-}
+#define print_LR()                                                             \
+  {                                                                            \
+    uint32_t result;                                                           \
+    asm volatile("mov %0, lr" : "=r"(result));                                 \
+    printf("%#010lx\r\n", result);                                             \
+  }
 
 #endif
