@@ -12,7 +12,7 @@ inline void print_LR() {
   uint32_t result;
 
   asm volatile("mov %0, lr" : "=r"(result));
-  printf("%#010lx", result);
+  printf("%#010lx\r\n", result);
 }
 
 #endif
